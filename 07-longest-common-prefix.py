@@ -23,7 +23,6 @@ def longestCommonPrefix(strings: List[str]) -> str:
             break
         checkedWords += 1
 
-    print(commonPrefix)
     return commonPrefix
 
 ##################################################################
