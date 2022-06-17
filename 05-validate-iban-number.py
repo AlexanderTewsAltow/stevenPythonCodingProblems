@@ -6,8 +6,73 @@
 # https://en.wikipedia.org/wiki/International_Bank_Account_Number#Validating_the_IBAN
 # (Hint 2) do not forget to strip away the whitespaces from the input string
 
+# 1. Länge überprüfen
+# 2. erste vier Zeichen ans Ende setzen, alle Buchstaben zu Zahlen (Format A=10, B=11, etc) konvertieren
+# 3. erhaltene Zahl vollständig um 97 dividieren, wenn 1 rauskommt ist richtig
+
+import math
+from operator import mod
+from timeit import repeat
+
+
 def validateIBAN(iban: str) -> bool:
-    # WRITE CODE HERE
+    strippedIban = iban.replace(" ", "")
+
+    countries = {
+        "DE": 22,
+        "NL": 18
+    }
+
+    ibanDict = {
+        "A": 10,
+        "B": 11,
+        "C": 12,
+        "D": 13,
+        "E": 14,
+        "F": 15,
+        "G": 16,
+        "H": 17,
+        "I": 18,
+        "J": 19,
+        "K": 20,
+        "L": 21,
+        "M": 22,
+        "N": 23,
+        "O": 24,
+        "P": 25,
+        "Q": 26,
+        "R": 27,
+        "S": 28,
+        "T": 29,
+        "U": 30,
+        "V": 31,
+        "W": 32,
+        "X": 33,
+        "Y": 34,
+        "Z": 35
+    }
+    if len(strippedIban) != countries[strippedIban[0:2]]:
+        print("False - length incorrect for",iban,", given length:", len(strippedIban))
+        return False
+
+    # better method more than likely available
+    firstFourChars = strippedIban[0:4]
+    newIban = strippedIban[4::]
+    newIban += firstFourChars
+    newIban = list(newIban)
+
+    for i in range(len(newIban)):
+        if newIban[i] in ibanDict:
+            newIban[i] = str(ibanDict[newIban[i]])
+
+    newIban = "".join(newIban)
+
+    if int(newIban) % 97 != 1:
+        print("False - digit test failed for", iban)
+        return False
+
+    print("Validated IBAN", iban)
+    return True
     pass
 
 ##################################################################
