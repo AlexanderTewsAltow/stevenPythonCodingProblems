@@ -2,9 +2,21 @@
 # Exercise 3: Decimal to Binary
 # Write a function that takes a number and returns a string with the binary representation of that number.
 
+import math
+
+# % is decimal
+# // round
 def decimalToBinary(number):
-    # WRITE CODE HERE
-    pass
+    string = ""
+    while True:
+        if number % 2 == 0:
+            string += "0"
+        else:
+            string += "1"
+        number = number//2
+
+        if number == 0:
+            return string[::-1]
 
 ##################################################################
 
