@@ -1,0 +1,74 @@
+h1 {
+    color: green;
+    margin-left: 20px;
+}
+* {
+    margin: 0;
+    padding: 0;
+}
+
+h2 {
+    color: yellowgreen
+}
+
+.link {
+    text-decoration: none;
+    margin-left: 10px;
+    color:black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 0 5px;
+}
+
+.link:hover {
+    background-color: darkgray;
+    color: white;
+}
+
+.h2class {
+    color: purple;
+}
+
+#h3id {
+    color: goldenrod;
+}
+
+section {
+    margin: 20px 0;
+}
+
+main {
+    width: 400px;
+    margin: 0 auto;
+}
+
+header {
+    height: 50px;
+    width: 100%;
+    background-color: lightgray;
+    display: flex;
+    align-items: center;
+}
+
+nav ol{
+    list-style-type: none;
+    display: flex;
+    height: 100%;
+}
+
+.logo {
+    height: 50px;
+    width: 50px;
+}
+
+nav {
+    margin-left: 50px;
+    height: 100%
+    
+}
+
+main section:nth-child(odd) {
+    background-color: antiquewhite;
+}
