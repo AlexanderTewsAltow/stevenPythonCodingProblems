@@ -1,0 +1,85 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.game {
+    width: 512px;
+    height: 512px;
+    margin: 15px auto;
+    position: relative;
+}
+
+.game h1 {
+    text-align: center;
+    font-size: 36px;
+}
+
+.game .playfield-points {
+    display: flex;
+    margin-top: 10px;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.game .playfield-points .points {
+    border: 1px solid black;
+    padding: 15px;
+    width: 201px;
+}
+
+.game .playfield-points h2 {
+    margin-bottom: 9px;
+}
+
+.game .playfield-points .playfield {
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
+    width: 201px;
+    height: 201px;
+}
+
+.game .playfield-points .playfield div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid black;
+    height: 67px;
+    width: 67px;
+    cursor: pointer;
+}
+
+.game .playfield-points .playfield div:hover {
+    background: #FFF5F5;
+}
+
+.game .button {
+    font-size: 16px;
+    text-shadow: black 0 0 1px;
+    color: white;
+    background-color: #BE2626;
+    padding: 7px 15px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.17s;
+}
+
+.game .button:hover {
+    background-color: #D70D0D;
+}
+
+.game .button:active {
+    transform: scale(0.95);
+}
+
+.game .resetButton {
+    left: 0;
+    bottom: 0;
+    position: absolute;
+}
