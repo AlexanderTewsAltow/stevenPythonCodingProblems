@@ -1,5 +1,4 @@
 <script setup>
-import { booleanLiteral } from '@babel/types';
 
 
 defineProps({
@@ -21,21 +20,29 @@ defineProps({
 
 <template>
     <button class="defaultStyle">
-        {{ displayName }}
+        <span>{{displayName}}</span>
     </button>
 </template>
 
 
 <style>
 
+.defaultStyle span {
+    border-left-style: solid;
+    border-color: #F9F9F9;
+    border-width: 2px;
+    padding-left: 10px;
+}
+
 .defaultStyle {
     display: flex;
     flex-direction: column;
-    height: 30px;
+    height: 40px;
     width: 97vh;
     margin-top: 5px;
     padding-left: 20px;
     background-color: transparent;
+    background: #272626;
 
     color: #F9F9F9;
     font-size: 18px;
