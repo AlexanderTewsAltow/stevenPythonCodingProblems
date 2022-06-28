@@ -5,7 +5,7 @@ import { ref } from 'vue';
 Todo:
 für wenn mir langweilig zu hause ist:
 - Rework whole "addedProductGroups" thingy -> isnt designed as planned (design on figma.com)
-- Rework CSS design (so the two divs that are currently aligned vertically are aligned horizontally)
+- Add Clear Button
 - Get rid of hardcoded groups & allow user to add custom group (incase if user needs a group that isnt specified)
   -> maybe leave some hardcoded groups in + allow user -,,-?
 - Add button to remove products instead of letting user click on the text
@@ -21,54 +21,8 @@ savedProductsInList[1][X] -> x = gruppen
 // delete list: get loaded lists name, look in savedProdutsInList for the name and get the id, then delete it from the obj
 const savedProductsInList = [
 {
-  [0]: {
-    name: "TestList",
-    id: 0
-  },
-  [1]: {
-    name: "SecondTestLest",
-    id: 1
-  }
 },
 {
-  [0]: [
-    {
-    group: "Obst",
-    products: {
-      [1]: {
-        id: 1,
-        name: "1x Luft",
-        amount: 1,
-        isPurchased: false
-      },
-      [2]: {
-        id: 2,
-        name: "1x Gold",
-        amount: 1,
-        isPurchased: false
-      }
-    }
-  }
-  ],
-  [1]: [
-    {
-    group: "Obst",
-    products: {
-      [1]: {
-        id: 1,
-        name: "1x Test Luft",
-        amount: 1,
-        isPurchased: false
-      },
-      [2]: {
-        id: 2,
-        name: "1x Test Gold",
-        amount: 1,
-        isPurchased: false
-      }
-    }
-  }
-  ]
 }
 ]
 
@@ -361,12 +315,12 @@ productsInList.value.forEach((indexedGroups) => {
     border-radius: 15px;
     border-width: 1px;
     height: 30px;
-    width: 270px;
+    width: 330px;
     margin-bottom: 15px;
   }
 
   .setShoppingListName #setNameButton {
-    width: 270px;
+    width: 330px;
     height: 25px;
 
     background-color: #16BA26;
@@ -377,6 +331,7 @@ productsInList.value.forEach((indexedGroups) => {
   }
 
   .setShoppingListName #setNameButton:hover:enabled {
+    width: 320px;
     background-color: #0ecf21;
   }
 
@@ -458,6 +413,7 @@ productsInList.value.forEach((indexedGroups) => {
 
   .addProduct #addProductButton:hover:enabled {
     background-color: #0ecf21;
+    width: 300px;
     transition: 0.1s;
   }
 
