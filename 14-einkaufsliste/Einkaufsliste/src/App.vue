@@ -3,7 +3,7 @@ import { stringifyStyle } from '@vue/shared';
 import { ref } from 'vue';
 /*
 Todo:
-für wenn mir langweilig in freizeit ist:
+für wenn mir langweilig zu hause ist:
 - Rework whole "addedProductGroups" thingy -> isnt designed as planned (design on figma.com)
 - Rework CSS design (so the two divs that are currently aligned vertically are aligned horizontally)
 - Get rid of hardcoded groups & allow user to add custom group (incase if user needs a group that isnt specified)
@@ -239,49 +239,51 @@ productsInList.value.forEach((indexedGroups) => {
   <h1>Einkaufsliste</h1>
 
   <div class="templateGroupA">
-    <div class="setShoppingListName defaultBg">
-      <form class="shoppingListForm" @submit="setListName">
-        <input type="text" id="shoppingListName" placeholder="Einkaufslistenname">
-        <button :disabled="isButtonDisabled" id="setNameButton" class="defaultButton" type="submit">Festlegen</button>
-      </form>
-    </div>
-
-    <div class="addProduct defaultBg">
-      <h2>Produkt hinzufügen</h2>
-      <div class="addProductGroup">
-        <input type="number" id="amount" v-model="amount" placeholder="1">
-        <input type="text" id="productName" v-model="productName" placeholder="Produktname eingeben">
-        <select id="groups" v-model="selectedGroup">
-          <option disabled value="">Gruppe</option>
-          <option>Obst</option>
-          <option>Gemüse</option>
-        </select>
+    <div class="topGroup">
+      <div class="setShoppingListName defaultBg">
+        <form class="shoppingListForm" @submit="setListName">
+          <input type="text" id="shoppingListName" placeholder="Einkaufslistenname">
+          <button :disabled="isButtonDisabled" id="setNameButton" class="defaultButton" type="submit">Festlegen</button>
+        </form>
       </div>
 
-      <button :disabled="!isButtonDisabled" id="addProductButton" class="defaultButton" @click="addProduct(productName, selectedGroup, amount)">Produkt hinzufügen</button>
-    </div>
+      <div class="addProduct defaultBg">
+        <h2>Produkt hinzufügen</h2>
+        <div class="addProductGroup">
+          <input type="number" id="amount" v-model="amount" placeholder="1">
+          <input type="text" id="productName" v-model="productName" placeholder="Produktname eingeben">
+          <select id="groups" v-model="selectedGroup">
+            <option disabled value="">Gruppe</option>
+            <option>Obst</option>
+            <option>Gemüse</option>
+          </select>
+        </div>
 
-    <div class="addedProductsGroup defaultBg">
-      <h2>{{ listName }}</h2>
-      <div class="addedProducts">
-        <div v-for="products in productsInList" :key="products.group" class="addedProductGroups">
-          <h3 v-if="Object.keys(products.products).length > 0">{{ products.group }}</h3>
-          <p v-for="allProducts in products.products" :key="allProducts.valueOf().id" :class="allProducts.valueOf().isPurchased ? 'productPurchased' : 'product'" @click="removeProduct(products.group,allProducts.valueOf().id)">{{allProducts.valueOf().name}}</p>
+        <button :disabled="!isButtonDisabled" id="addProductButton" class="defaultButton" @click="addProduct(productName, selectedGroup, amount)">Produkt hinzufügen</button>
+      </div>
+
+      <div class="addedProductsGroup defaultBg">
+        <h2>{{ listName }}</h2>
+        <div class="addedProducts">
+          <div v-for="products in productsInList" :key="products.group" class="addedProductGroups">
+            <h3 v-if="Object.keys(products.products).length > 0">{{ products.group }}</h3>
+            <p v-for="allProducts in products.products" :key="allProducts.valueOf().id" :class="allProducts.valueOf().isPurchased ? 'productPurchased' : 'product'" @click="removeProduct(products.group,allProducts.valueOf().id)">{{allProducts.valueOf().name}}</p>
+          </div>
+        </div>
+        <div class="containerB">
+          <button id="saveList" class="defaultButton" @click="saveList">Speichern</button>
+          <button id="deleteList" class="defaultButton" @click="deleteLoadedList">Löschen</button>
         </div>
       </div>
-      <div class="containerB">
-        <button id="saveList" class="defaultButton" @click="saveList">Speichern</button>
-        <button id="deleteList" class="defaultButton" @click="deleteLoadedList">Löschen</button>
-      </div>
     </div>
 
-    <div class="savedListsGroup defaultBg">
-      <div v-for="lists in savedProductsInList" :key="lists" class="savedLists">
-        <h3 v-for="listnames in lists" @click="loadList(listnames.id)">{{ listnames.name }}</h3>
-      </div>
-    </div>
 
   </div>
+    <div class="savedListsGroup defaultBg">
+      <div v-for="lists in savedProductsInList" :key="lists">
+        <h3 v-for="listnames in lists" @click="loadList(listnames.id)" class="savedLists">{{ listnames.name }}</h3>
+      </div>
+    </div>
 </template>
 
 <style>
@@ -321,7 +323,7 @@ productsInList.value.forEach((indexedGroups) => {
   }
 
   .templateGroupA {
-    height: 400px;
+    height: 480px;
     width: 1400px;
     padding-top: 30px;
     border-width: 1px;
@@ -330,7 +332,13 @@ productsInList.value.forEach((indexedGroups) => {
     border-style: solid;
   }
 
+  .topGroup {
+    display:flex;
+    position: absolute;
+  }
+
   .setShoppingListName {
+    position: absolute;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -353,12 +361,12 @@ productsInList.value.forEach((indexedGroups) => {
     border-radius: 15px;
     border-width: 1px;
     height: 30px;
-    width: 340px;
+    width: 270px;
     margin-bottom: 15px;
   }
 
   .setShoppingListName #setNameButton {
-    width: 340px;
+    width: 270px;
     height: 25px;
 
     background-color: #16BA26;
@@ -387,7 +395,7 @@ productsInList.value.forEach((indexedGroups) => {
     align-items: center;
     flex-direction: column;
     margin-left: 40px;
-    margin-top: 116px;
+    margin-top: 166px;
     height: 150px;
     width: 440px;
   }
@@ -396,20 +404,16 @@ productsInList.value.forEach((indexedGroups) => {
     font-family: 'Jost';
     position: absolute;
     border-bottom-style: solid;
-    width: 410px;
-    padding-left: 30px;
+    width: 94%;
+    padding-left: 20px;
     top: 0;
-  }
-
-  .addProduct #addProductButton {
-    width: 10
   }
 
   .addProduct .addProductGroup {
     background-color: #D9D9D9;
     border-radius: 15px;
     height: 25px;
-    width: 340px;
+    width: 310px;
     margin-bottom: 20px;
   }
 
@@ -428,7 +432,7 @@ productsInList.value.forEach((indexedGroups) => {
     border-width: 1px;
     border-right-width: 0px;
     height: 25px;
-    width: 220px;
+    width: 190px;
     background-color: transparent;
     text-align: center;
   }
@@ -445,7 +449,7 @@ productsInList.value.forEach((indexedGroups) => {
     color:#F9F9F9;
     background-color: #16BA26;
     height:25px;
-    width: 340px;
+    width: 310px;
   }
 
   .addProduct #addProductButton:disabled {
@@ -462,6 +466,7 @@ productsInList.value.forEach((indexedGroups) => {
   }
 
   .addedProductsGroup {
+    margin-left: 70px;
     justify-content: space-between;
     flex-direction: column;
     display: flex;
@@ -517,6 +522,14 @@ productsInList.value.forEach((indexedGroups) => {
     display: flex;
     justify-content: space-around;
     border-style: solid;
+  }
+
+  .savedListsGroup {
+    margin-top: 20px;
+  }
+
+  .savedLists {
+    padding-left: 10px;
   }
 
 </style>
