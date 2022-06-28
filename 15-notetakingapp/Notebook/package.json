@@ -1,5 +1,5 @@
 {
-  "name": "notebook-app",
+  "name": "notebook",
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
@@ -27,7 +27,6 @@
     "@vue/eslint-config-prettier": "^7.0.0",
     "babel-loader": "^8.2.5",
     "eslint": "^8.5.0",
-    "eslint-plugin-storybook": "^0.5.13",
     "eslint-plugin-vue": "^9.0.0",
     "prettier": "^2.5.1",
     "vite": "^2.9.12",
