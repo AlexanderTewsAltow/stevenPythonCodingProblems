@@ -3,52 +3,22 @@ import { stringifyStyle } from '@vue/shared';
 import { ref } from 'vue';
 /*
 Todo:
-
+für wenn mir langweilig in freizeit ist:
 - Rework whole "addedProductGroups" thingy -> isnt designed as planned (design on figma.com)
 - Rework CSS design (so the two divs that are currently aligned vertically are aligned horizontally)
-- Option to set amount of products you want to add
 - Get rid of hardcoded groups & allow user to add custom group (incase if user needs a group that isnt specified)
   -> maybe leave some hardcoded groups in + allow user -,,-?
 - Add button to remove products instead of letting user click on the text
-- Replace "Placeholder" with listName
-
 */
 
-const productsInList = ref([
-  {
-    group: "Obst",
-    products: {
-      [1]: {
-        id: 1,
-        name: "1x Luft",
-        amount: 1,
-        isPurchased: false
-      },
-      [2]: {
-        id: 2,
-        name: "1x Gold",
-        amount: 1,
-        isPurchased: false
-      }
-    }
-  },
-  {
-    group: "Gemüse",
-    products: {
-      [1]: {
-        id: 1,
-        name: "1x Gemüse Luft",
-        amount: 1,
-        isPurchased: false
-      }
-    }
-  }
-])
+const productsInList = ref([])
 /*
 savedProductsInList[0] -> Name für die Einkauslisten
 savedProductsInList[1] -> Listen
 savedProductsInList[1][X] -> x = gruppen
 */
+
+// delete list: get loaded lists name, look in savedProdutsInList for the name and get the id, then delete it from the obj
 const savedProductsInList = [
 {
   [0]: {
@@ -80,7 +50,6 @@ const savedProductsInList = [
     }
   }
   ],
-
   [1]: [
     {
     group: "Obst",
@@ -118,12 +87,23 @@ function setListName(event: Event) {
 }
 
 function saveList(){
-  let newID = Object.keys(savedProductsInList[0]).length
+  let newID = 0;
   let newListName = listName.value
-  let listvalue = productsInList.value
-  savedProductsInList[0][newID] = {
-    name: newListName,
-    id: newID
+  let found = false;
+  Object.keys(savedProductsInList[0]).map((lists) => {
+    if(savedProductsInList[0][lists].name == newListName) {
+      newID = savedProductsInList[0][lists].id
+      found = true;
+    }
+  })
+
+  if(found == false) {
+    console.log("creating new entry")
+    newID = Object.keys(savedProductsInList[0]).length
+    savedProductsInList[0][newID] = {
+      name: newListName,
+      id: newID
+    }
   }
 
   savedProductsInList[1][newID] = productsInList.value
@@ -135,14 +115,23 @@ function loadList(id: string) {
   console.log("called")
 }
 
-function deleteList(id: string) {
-  if (!savedProductsInList[1][id]) return;
-  delete savedProductsInList[1][id]
+function deleteLoadedList() {
+  let loadedListName = listName.value
+  if (savedProductsInList[0].length != 0) {
+  Object.keys(savedProductsInList[0]).map((lists) => {
+    if (savedProductsInList[0][lists].name == listName.value) {
+      delete savedProductsInList[0][lists]
+      delete savedProductsInList[1][lists]
+    }
+  })
+  }
   productsInList.value = []
   listName.value = "Einkaufslistenname"
+  isButtonDisabled.value = false;
+
 }
 
-function conditionlessAddProduct(existsAlready: boolean, groupIndex: number, indexedProducts: string, productName: string, id: number, latestID: number, amount: number) {
+function conditionlessAddProduct(existsAlready: boolean, groupName: string, groupIndex: number, productName: string, id: number, latestID: number, amount: number) {
   if(existsAlready === false) {
     productsInList.value[groupIndex].products[latestID] = {
       id: latestID,
@@ -152,16 +141,16 @@ function conditionlessAddProduct(existsAlready: boolean, groupIndex: number, ind
     }
   } else {
     let product = productsInList.value[groupIndex].products[parseInt(id)]
-    console.log(product)
+    console.log(id)
     product.amount += amount
     product.name = product.amount + "x " + productName
   }
-
-  saveList()
+  console.log(productsInList.value[groupIndex])
 }
 
 function addProduct(productName: string, groupName: string, amount: number) {
 
+  let foundGroup = false;
   let found = false;
   let groupIndexP = 0;
   let indexedProductsP = "";
@@ -169,9 +158,24 @@ function addProduct(productName: string, groupName: string, amount: number) {
   let latestID = 0;
   let productIdP = 0;
   let amountP = 0;
+
+  if (productsInList.value.length == 0) {
+    productsInList.value = [{
+      group: groupName,
+      products: {
+        [0]: {
+        id: 0,
+        name: "",
+        amount: 0,
+        isPurchased: false
+      }}
+    }]
+  }
+  console.log(productsInList.value)
   productsInList.value.map((groups, groupIndex) => {
 
     if (groups.group == groupName) {
+      foundGroup = true;
       Object.keys(groups.products).map((indexedProducts, productIndex) => {
         let theProduct = groups.products[parseInt(indexedProducts)]
 
@@ -181,15 +185,35 @@ function addProduct(productName: string, groupName: string, amount: number) {
           productIdP = productIndex
         }
         groupIndexP = groupIndex
-        indexedProductsP = indexedProducts
-        productNameP = productName
-        amountP = amount
-        latestID = Object.keys(groups.products).length + 1
       })
+    latestID = Object.keys(groups.products).length
     }
   })
-  console.log(found, groupIndexP, indexedProductsP, productNameP, productIdP, latestID,amountP) 
-  conditionlessAddProduct(found, groupIndexP, indexedProductsP, productNameP, productIdP+1, latestID, amountP)
+  productNameP = productName
+  amountP = amount
+  console.log(foundGroup)
+  if(foundGroup == false) {
+    groupIndexP = productsInList.value.length
+
+    console.log("adding group",groupName, productName, amount)
+    productsInList.value.push({
+      group: groupName,
+      products: {
+        [0]: {
+          id: 0,
+          name: "",
+          amount: 0,
+          isPurchased: false
+        }
+      }
+    })
+  }
+
+  //console.log(productsInList.value)
+  //console.log(found, groupName, groupIndexP, productNameP, productIdP, latestID, amountP)
+  console.log(productIdP)
+  conditionlessAddProduct(found, groupName, groupIndexP, productNameP, productIdP, latestID, amountP)
+  saveList()
 }
 
 function removeProduct(groupName: string,id: number) {
@@ -247,7 +271,7 @@ productsInList.value.forEach((indexedGroups) => {
       </div>
       <div class="containerB">
         <button id="saveList" class="defaultButton" @click="saveList">Speichern</button>
-        <button id="deleteList" class="defaultButton" @click="deleteList(listnames.id)">Löschen</button>
+        <button id="deleteList" class="defaultButton" @click="deleteLoadedList">Löschen</button>
       </div>
     </div>
 
