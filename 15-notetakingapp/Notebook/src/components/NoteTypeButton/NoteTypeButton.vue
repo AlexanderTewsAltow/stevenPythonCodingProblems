@@ -1,9 +1,7 @@
 <script setup>
-
-
-defineProps({
+const props = defineProps({
     id: {
-        type: Number,
+        type: String,
         required: true
     },
     displayName: {
@@ -11,7 +9,7 @@ defineProps({
         required: true
     },
     isSelected: {
-        type: Boolean,
+        type: String,
         required: true
     }
 })
@@ -19,22 +17,31 @@ defineProps({
 
 
 <template>
-    <button class="defaultStyle">
-        <span>{{displayName}}</span>
+    <button class="NoteTypeButton">
+        <span v-if="props.isSelected === 'true'" class="selectedSpan">{{displayName}}</span>
+        <span v-else class="NoteTypeSpan">{{ displayName }}</span>
     </button>
 </template>
 
 
 <style>
 
-.defaultStyle span {
+.selectedSpan {
     border-left-style: solid;
-    border-color: #F9F9F9;
+    border-color: #ffffff;
     border-width: 2px;
     padding-left: 10px;
 }
 
-.defaultStyle {
+.NoteTypeSpan {
+    border-left-style: none;
+    border-color: #ffffff;
+    border-width: 0px;
+    padding-left: 0px;
+    transition: 0.3s;
+}
+
+.NoteTypeButton {
     display: flex;
     flex-direction: column;
     height: 40px;
@@ -42,23 +49,34 @@ defineProps({
     margin-top: 5px;
     padding-left: 20px;
     background-color: transparent;
-    background: #272626;
+    background: #1f1e1e;
 
-    color: #F9F9F9;
+    color: #ffffff;
     font-size: 18px;
     justify-content: center;
 
     border-style: none;
 
-    transition: 0.3s;
+    transition: all 0.3s ease-in-out;
 }
 
-.defaultStyle:hover {
+.NoteTypeButton:hover {
     background: #454343;
     cursor: pointer;
 }
 
-.defaultStyle:active {
+.NoteTypeButton:hover > .NoteTypeSpan {
+    transition: 0.3s;
+    border-left-style: solid;
+    border-color: #ffffff;
+    border-width: 2px;
+    padding-left: 10px;
+
+    
+}
+
+.NoteTypeButton:active {
+    cursor: default;
     transition: 0.1s;
     font-size: 17px;
 }
